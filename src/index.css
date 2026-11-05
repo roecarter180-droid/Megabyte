@@ -1,0 +1,111 @@
+:root {
+  /* Palette — solid colours taken from the MegaByte logo, on warm paper */
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --tint: #efede6;
+  --ink: #15212e;
+  --ink-2: #465361;
+  --ink-3: #66717d;
+  --line: #e2dfd6;
+  --line-2: #d3cfc4;
+  --navy: #10304f;
+  --navy-2: #0b2440;
+  --blue: #1a68b8;
+  --green: #2f9e4b;
+  --green-ink: #22783a;
+
+  --maxw: 1160px;
+  --radius: 10px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+::selection {
+  background: #cfe6d5;
+}
+
+.icon {
+  flex: none;
+  display: block;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Visible keyboard focus everywhere (mouse clicks stay clean) */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
