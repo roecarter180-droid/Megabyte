@@ -2,11 +2,14 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import logo from './assets/logo.jpg'
 import { Icon } from './icons.jsx'
 import { CONTACT, SOCIALS, T } from './content.js'
+import { AdminDashboard, OrderTrackingPage, ServiceCard, ServiceOrderModal } from './OrderSystem.jsx'
+import { SiteControls } from './SiteControls.jsx'
 import './App.css'
 
 const Hero3D = lazy(() => import('./Hero3D.jsx'))
 
 const SECTIONS = ['services', 'courses', 'why', 'contact']
+const SERVICE_VIDEOS = ['logo', 'network', 'repair', 'gaming-setup', 'camera']
 
 /* Fade/slide sections in as they scroll into view */
 function useReveal(dep) {
@@ -24,22 +27,6 @@ function useReveal(dep) {
     document.querySelectorAll('.reveal:not(.in)').forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [dep])
-}
-
-/* Card tilts toward the cursor in 3D */
-function tilt(e) {
-  const el = e.currentTarget
-  const r = el.getBoundingClientRect()
-  const x = (e.clientX - r.left) / r.width - 0.5
-  const y = (e.clientY - r.top) / r.height - 0.5
-  el.style.setProperty('--ry', `${x * 14}deg`)
-  el.style.setProperty('--rx', `${-y * 14}deg`)
-  el.style.setProperty('--gx', `${(x + 0.5) * 100}%`)
-  el.style.setProperty('--gy', `${(y + 0.5) * 100}%`)
-}
-function untilt(e) {
-  e.currentTarget.style.setProperty('--rx', '0deg')
-  e.currentTarget.style.setProperty('--ry', '0deg')
 }
 
 /* 3D staircase — one step per course level */
@@ -106,7 +93,7 @@ function SectionHead({ title, text }) {
 
 function Level({ level, t, open, onToggle, index }) {
   return (
-    <details className={`level reveal ${open ? 'is-open' : ''}`} open={open} id={`level-${index}`}>
+    <details className={`level ${open ? 'is-open' : ''}`} open={open} id={`level-${index}`}>
       <summary
         onClick={(e) => {
           e.preventDefault()
@@ -200,24 +187,36 @@ function SocialItem({ s, t }) {
   )
 }
 
-function App() {
-  const [lang, setLang] = useState('tk')
+function MainSite({ lang, setLang, theme, onThemeToggle }) {
   const [open, setOpen] = useState(false)
   const [openLevel, setOpenLevel] = useState(0)
+  const [levelScrollRequest, setLevelScrollRequest] = useState(null)
+  const [expandedService, setExpandedService] = useState('')
+  const [orderService, setOrderService] = useState('')
   const t = T[lang]
   const active = useScrollSpy(SECTIONS)
   useReveal(lang)
 
+  useEffect(() => {
+    if (levelScrollRequest === null) return
+    document
+      .getElementById(`level-${levelScrollRequest.index}`)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [levelScrollRequest])
+
   const pickLevel = (i) => {
     setOpenLevel(i)
-    requestAnimationFrame(() =>
-      document.getElementById(`level-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }),
-    )
+    setLevelScrollRequest({ index: i })
   }
 
-  useEffect(() => {
-    document.documentElement.lang = lang
-  }, [lang])
+  const toggleLevel = (i) => {
+    if (openLevel === i) {
+      setOpenLevel(-1)
+      return
+    }
+    setOpenLevel(i)
+    setLevelScrollRequest({ index: i })
+  }
 
   /* Mobile menu: Esc closes it, and the page behind doesn't scroll */
   useEffect(() => {
@@ -265,21 +264,13 @@ function App() {
           </nav>
 
           <div className="header-actions">
-            <div className="lang" role="group" aria-label="Language">
-              {[
-                ['tk', 'TM'],
-                ['en', 'EN'],
-              ].map(([code, label]) => (
-                <button
-                  key={code}
-                  className={lang === code ? 'active' : ''}
-                  onClick={() => setLang(code)}
-                  aria-pressed={lang === code}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+            <SiteControls
+              lang={lang}
+              onLanguageChange={setLang}
+              theme={theme}
+              onThemeToggle={onThemeToggle}
+              t={t}
+            />
             <a href={`tel:${CONTACT.phoneRaw[0]}`} className="header-phone desktop-only">
               <Icon name="phone" size={17} />
               {CONTACT.phones[0]}
@@ -335,17 +326,29 @@ function App() {
             </div>
           </div>
 
-          <div className="container">
+          <div className="container hero-work">
+            <h2 className="hero-work-title reveal">{t.boardTitle}</h2>
             <ul className="hero-strip">
-              {t.board.map(([icon, name, sub], i) => (
+              {t.board.map(([icon, name, sub, steps], i) => (
                 <li key={icon} className="reveal" style={{ '--d': `${i * 70}ms` }}>
-                  <span className="strip-icon">
-                    <Icon name={icon} size={20} />
-                  </span>
-                  <span>
-                    <strong>{name}</strong>
-                    <small>{sub}</small>
-                  </span>
+                  <div className="process-card-head">
+                    <span className="strip-icon">
+                      <Icon name={icon} size={22} />
+                    </span>
+                    <span className="process-card-title">
+                      <strong>{name}</strong>
+                      <small>{sub}</small>
+                    </span>
+                  </div>
+                  <ol className="process-steps">
+                    {steps.map((step, stepIndex) => (
+                      <li key={step}>
+                        <span className="process-step-number">{stepIndex + 1}</span>
+                        <span className="process-step-label">{step}</span>
+                        {stepIndex < steps.length - 1 && <Icon name="arrowRight" size={15} className="process-arrow" />}
+                      </li>
+                    ))}
+                  </ol>
                 </li>
               ))}
             </ul>
@@ -357,21 +360,65 @@ function App() {
           <div className="container">
             <SectionHead title={t.servicesTitle} text={t.servicesText} />
             <div className="services">
-              {t.services.map(([icon, title, desc], i) => (
-                <article
-                  className="service reveal"
-                  key={icon}
-                  style={{ '--d': `${(i % 4) * 70}ms` }}
-                  onPointerMove={tilt}
-                  onPointerLeave={untilt}
-                >
-                  <span className="service-icon">
-                    <Icon name={icon} size={22} />
-                  </span>
-                  <h3>{title}</h3>
-                  <p>{desc}</p>
-                </article>
+              {t.services.map(([icon, title, desc, serviceId], i) => (
+                <ServiceCard
+                  key={serviceId}
+                  serviceId={serviceId}
+                  icon={icon}
+                  title={title}
+                  description={desc}
+                  workflow={t.serviceWorkflows[i]}
+                  t={t}
+                  lang={lang}
+                  expanded={expandedService === serviceId}
+                  onToggle={() => setExpandedService((current) => current === serviceId ? '' : serviceId)}
+                  onOrder={() => setOrderService(serviceId)}
+                />
               ))}
+            </div>
+            <div className="service-demo reveal">
+              <div className="service-demo-copy">
+                <span className="service-demo-icon">
+                  <Icon name="globe" size={22} />
+                </span>
+                <h3>{t.servicesDemoTitle}</h3>
+                <p>{t.servicesDemoText}</p>
+              </div>
+              <div className="service-demo-marquee">
+                <div className="service-demo-track">
+                  <div className="service-demo-video-group">
+                    {SERVICE_VIDEOS.map((video, i) => (
+                      <figure className="service-demo-video-card" key={video}>
+                        <video
+                          className="service-demo-video"
+                          src={`/videos/${video}.mp4`}
+                          autoPlay
+                          controls
+                          loop
+                          muted
+                          playsInline
+                          preload="metadata"
+                          aria-label={t.servicesDemoVideos[i]}
+                        />
+                        <figcaption>{t.servicesDemoVideos[i]}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                  <div className="service-demo-video-group" aria-hidden="true">
+                    {SERVICE_VIDEOS.map((video, i) => (
+                      <figure className="service-demo-video-card" key={video}>
+                        <img
+                          className="service-demo-video"
+                          src={`/videos/${video}.jpg`}
+                          alt=""
+                          loading="lazy"
+                        />
+                        <figcaption>{t.servicesDemoVideos[i]}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -430,7 +477,7 @@ function App() {
                     level={level}
                     t={t}
                     open={openLevel === i}
-                    onToggle={() => setOpenLevel(openLevel === i ? -1 : i)}
+                    onToggle={() => toggleLevel(i)}
                   />
                 ))}
               </div>
@@ -530,8 +577,59 @@ function App() {
           © {new Date().getFullYear()} MegaByte Academy & IT-Club. {t.rights}
         </div>
       </footer>
+      {orderService && (
+        <ServiceOrderModal
+          t={t}
+          initialServiceId={orderService}
+          onClose={() => setOrderService('')}
+        />
+      )}
     </div>
   )
+}
+
+function App() {
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem('megabyte-language')
+    return ['tk', 'ru', 'en'].includes(saved) ? saved : 'tk'
+  })
+  const [theme, setTheme] = useState(() => localStorage.getItem('megabyte-theme') === 'dark' ? 'dark' : 'light')
+  const t = T[lang]
+  const path = window.location.pathname
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('megabyte-language', lang)
+    localStorage.setItem('megabyte-theme', theme)
+  }, [lang, theme])
+
+  const onThemeToggle = () => setTheme((current) => current === 'dark' ? 'light' : 'dark')
+
+  if (path.startsWith('/track/')) {
+    return (
+      <OrderTrackingPage
+        token={path.split('/')[2] ?? ''}
+        t={t}
+        lang={lang}
+        setLang={setLang}
+        theme={theme}
+        onThemeToggle={onThemeToggle}
+      />
+    )
+  }
+  if (path === '/admin' || path === '/admin/') {
+    return (
+      <AdminDashboard
+        t={t}
+        lang={lang}
+        setLang={setLang}
+        theme={theme}
+        onThemeToggle={onThemeToggle}
+      />
+    )
+  }
+  return <MainSite lang={lang} setLang={setLang} theme={theme} onThemeToggle={onThemeToggle} />
 }
 
 export default App

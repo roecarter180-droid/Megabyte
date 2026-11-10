@@ -10,7 +10,12 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.netlify
 *.local
+.env
+.env.*
+!.env.example
+data/
 
 # Editor directories and files
 .vscode/*
