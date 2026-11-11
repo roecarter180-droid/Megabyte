@@ -143,6 +143,8 @@ ol {
   .reveal {
     opacity: 1 !important;
     translate: none !important;
+    scale: 1 !important;
+    filter: none !important;
   }
   html {
     scroll-behavior: auto;

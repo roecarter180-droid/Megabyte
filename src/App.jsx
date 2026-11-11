@@ -93,7 +93,12 @@ function SectionHead({ title, text }) {
 
 function Level({ level, t, open, onToggle, index }) {
   return (
-    <details className={`level ${open ? 'is-open' : ''}`} open={open} id={`level-${index}`}>
+    <details
+      className={`level reveal ${open ? 'is-open' : ''}`}
+      style={{ '--d': `${Math.min(index, 6) * 65}ms` }}
+      open={open}
+      id={`level-${index}`}
+    >
       <summary
         onClick={(e) => {
           e.preventDefault()
@@ -342,13 +347,13 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
         <section className="hero">
           <div className="container hero-inner">
             <div className="hero-copy">
-              <p className="kicker">
+              <p className="kicker reveal" style={{ '--d': '80ms' }}>
                 <img src={logo} alt="" width="28" height="28" />
                 {t.heroKicker}
               </p>
-              <h1>{t.heroTitle}</h1>
-              <p className="hero-text">{t.heroText}</p>
-              <div className="hero-btns">
+              <h1 className="reveal" style={{ '--d': '160ms' }}>{t.heroTitle}</h1>
+              <p className="hero-text reveal" style={{ '--d': '240ms' }}>{t.heroText}</p>
+              <div className="hero-btns reveal" style={{ '--d': '320ms' }}>
                 <a href={`tel:${CONTACT.phoneRaw[0]}`} className="btn btn-primary">
                   <Icon name="phone" size={18} />
                   {t.heroCall}
@@ -357,7 +362,7 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
                   {t.heroCourses}
                 </a>
               </div>
-              <p className="hero-phones">
+              <p className="hero-phones reveal" style={{ '--d': '400ms' }}>
                 {CONTACT.phones.map((p, i) => (
                   <a key={p} href={`tel:${CONTACT.phoneRaw[i]}`}>{p}</a>
                 ))}
@@ -408,12 +413,13 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
           <div className="container">
             <SectionHead title={t.servicesTitle} text={t.servicesText} />
             <div className="services">
-              {t.services.map(([icon, title, desc, serviceId]) => (
+              {t.services.map(([icon, title, desc, serviceId], i) => (
                 <ServiceCard
                   key={serviceId}
                   icon={icon}
                   title={title}
                   description={desc}
+                  style={{ '--d': `${(i % 4) * 80}ms` }}
                 />
               ))}
             </div>

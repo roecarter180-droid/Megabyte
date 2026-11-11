@@ -66,10 +66,11 @@ function RouteHeader({ title, back, lang, setLang, theme, onThemeToggle, t }) {
   )
 }
 
-export function ServiceCard({ icon, title, description }) {
+export function ServiceCard({ icon, title, description, style }) {
   return (
     <article
-      className="service"
+      className="service reveal"
+      style={style}
       onPointerMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
         const x = (event.clientX - rect.left) / rect.width - 0.5
