@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import logo from './assets/logo.jpg'
 import { Icon } from './icons.jsx'
 import { CONTACT, SOCIALS, T } from './content.js'
-import { AdminDashboard, OrderTrackingPage, ServiceCard, ServiceOrderModal } from './OrderSystem.jsx'
+import { AdminDashboard, OrderTrackingPage, ServiceCard } from './OrderSystem.jsx'
 import { SiteControls } from './SiteControls.jsx'
 import './App.css'
 
@@ -241,7 +241,6 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
   const [open, setOpen] = useState(false)
   const [openLevel, setOpenLevel] = useState(0)
   const [levelScrollRequest, setLevelScrollRequest] = useState(null)
-  const [orderService, setOrderService] = useState('')
   const t = T[lang]
   const active = useScrollSpy(SECTIONS)
   useReveal(lang)
@@ -415,8 +414,6 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
                   icon={icon}
                   title={title}
                   description={desc}
-                  t={t}
-                  onOrder={() => setOrderService(serviceId)}
                 />
               ))}
             </div>
@@ -611,13 +608,6 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
           © {new Date().getFullYear()} MegaByte Academy & IT-Club. {t.rights}
         </div>
       </footer>
-      {orderService && (
-        <ServiceOrderModal
-          t={t}
-          initialServiceId={orderService}
-          onClose={() => setOrderService('')}
-        />
-      )}
     </div>
   )
 }

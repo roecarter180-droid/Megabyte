@@ -66,8 +66,7 @@ function RouteHeader({ title, back, lang, setLang, theme, onThemeToggle, t }) {
   )
 }
 
-export function ServiceCard({ icon, title, description, t, onOrder }) {
-  const order = t.order
+export function ServiceCard({ icon, title, description }) {
   return (
     <article
       className="service"
@@ -90,10 +89,6 @@ export function ServiceCard({ icon, title, description, t, onOrder }) {
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
-      <button type="button" className="btn btn-primary service-order-button" onClick={onOrder}>
-        {order.orderService}
-        <Icon name="arrowRight" size={17} />
-      </button>
     </article>
   )
 }

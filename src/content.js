@@ -60,7 +60,6 @@ export const T = {
       'Kamera gurnama',
     ],
     order: {
-      orderService: 'Hyzmaty sargyt et',
       formTitle: 'Hyzmat sargydy',
       stepTitles: ['Hyzmaty saýlaň', 'Habarlaşmak üçin maglumatlar', 'Meseläni düşündiriň', 'Surat goşuň', 'Sargydy barlaň'],
       service: 'Hyzmat',
@@ -351,7 +350,6 @@ export const T = {
       'Camera installation',
     ],
     order: {
-      orderService: 'Order this service',
       formTitle: 'Service request',
       stepTitles: ['Select a service', 'Your contact details', 'Describe your needs', 'Add photos', 'Review your request'],
       service: 'Service',
@@ -642,7 +640,6 @@ T.ru = {
     'Установка камер',
   ],
   order: {
-    orderService: 'Заказать услугу',
     formTitle: 'Заявка на услугу',
     stepTitles: ['Выберите услугу', 'Контактные данные', 'Опишите задачу', 'Добавьте фото', 'Проверьте заявку'],
     service: 'Услуга',
