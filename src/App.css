@@ -1257,12 +1257,10 @@
   .services { grid-template-columns: 1fr; }
   .service-demo-video-card { flex-basis: min(72vw, 320px); }
   .service {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 14px;
-    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
   }
-  .service-icon { grid-row: span 2; margin-bottom: 0; }
   .courses-aside { grid-template-columns: 1fr; }
   .why { grid-template-columns: 1fr; gap: 22px; }
   .hero-btns .btn { flex: 1 1 100%; }

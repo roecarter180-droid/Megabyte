@@ -66,12 +66,11 @@ function RouteHeader({ title, back, lang, setLang, theme, onThemeToggle, t }) {
   )
 }
 
-export function ServiceCard({ serviceId, icon, title, description, workflow, t, lang, expanded, onToggle, onOrder }) {
+export function ServiceCard({ icon, title, description, t, onOrder }) {
   const order = t.order
-  const detailsId = `service-${serviceId}-details`
   return (
     <article
-      className={`service ${expanded ? 'service-expanded' : ''}`}
+      className="service"
       onPointerMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()
         const x = (event.clientX - rect.left) / rect.width - 0.5
@@ -84,44 +83,17 @@ export function ServiceCard({ serviceId, icon, title, description, workflow, t, 
         event.currentTarget.style.setProperty('--ry', '0deg')
       }}
     >
-      <button
-        type="button"
-        className="service-trigger"
-        aria-expanded={expanded}
-        aria-controls={detailsId}
-        onClick={onToggle}
-      >
+      <div className="service-content">
         <span className="service-icon">
           <Icon name={icon} size={22} />
         </span>
-        <span className="service-title">{title}</span>
-        <span className="service-description">{description}</span>
-        <span className="service-more">
-          {expanded ? (lang === 'tk' ? 'Ýap' : 'Close') : order.details}
-          <Icon name="chevron" size={17} />
-        </span>
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+      <button type="button" className="btn btn-primary service-order-button" onClick={onOrder}>
+        {order.orderService}
+        <Icon name="arrowRight" size={17} />
       </button>
-      {expanded && (
-        <div className="service-details" id={detailsId}>
-          <p className="service-turnaround">
-            <Icon name="clock" size={17} />
-            <span>{order.expectedTime}: <strong>{workflow.time}</strong></span>
-          </p>
-          <ol className="service-workflow">
-            {workflow.steps.map(([stepIcon, label], index) => (
-              <li key={label}>
-                <span className="workflow-number">{index + 1}</span>
-                <Icon name={stepIcon} size={18} />
-                <span>{label}</span>
-              </li>
-            ))}
-          </ol>
-          <button type="button" className="btn btn-primary service-order-button" onClick={onOrder}>
-            {order.orderService}
-            <Icon name="arrowRight" size={17} />
-          </button>
-        </div>
-      )}
     </article>
   )
 }

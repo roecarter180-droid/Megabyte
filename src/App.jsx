@@ -241,7 +241,6 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
   const [open, setOpen] = useState(false)
   const [openLevel, setOpenLevel] = useState(0)
   const [levelScrollRequest, setLevelScrollRequest] = useState(null)
-  const [expandedService, setExpandedService] = useState('')
   const [orderService, setOrderService] = useState('')
   const t = T[lang]
   const active = useScrollSpy(SECTIONS)
@@ -410,18 +409,13 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
           <div className="container">
             <SectionHead title={t.servicesTitle} text={t.servicesText} />
             <div className="services">
-              {t.services.map(([icon, title, desc, serviceId], i) => (
+              {t.services.map(([icon, title, desc, serviceId]) => (
                 <ServiceCard
                   key={serviceId}
-                  serviceId={serviceId}
                   icon={icon}
                   title={title}
                   description={desc}
-                  workflow={t.serviceWorkflows[i]}
                   t={t}
-                  lang={lang}
-                  expanded={expandedService === serviceId}
-                  onToggle={() => setExpandedService((current) => current === serviceId ? '' : serviceId)}
                   onOrder={() => setOrderService(serviceId)}
                 />
               ))}
