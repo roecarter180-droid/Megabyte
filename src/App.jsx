@@ -94,8 +94,7 @@ function SectionHead({ title, text }) {
 function Level({ level, t, open, onToggle, index }) {
   return (
     <details
-      className={`level reveal ${open ? 'is-open' : ''}`}
-      style={{ '--d': `${Math.min(index, 6) * 65}ms` }}
+      className={`level ${open ? 'is-open' : ''}`}
       open={open}
       id={`level-${index}`}
     >
