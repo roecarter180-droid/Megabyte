@@ -25,13 +25,19 @@ The server prints a temporary development admin password at startup. Use it at `
 
 The administrator dashboard is at `/admin`. Customers receive a private `/track/<token>` link after submitting a request.
 
-## Deploy to Netlify (free tier)
+## Deploy to Netlify without an order backend
 
-The Netlify build serves the Vite site and routes `/api/*` to a Netlify Function. Supabase Free provides the persistent PostgreSQL database and private photo storage; free-tier quotas and pausing policies apply. No Netlify paid database or blob service is used.
+The website can be published as a static site without configuring Supabase or other backend credentials. Netlify serves the Vite frontend and routes `/api/*` to a function that explicitly returns `503 Service Unavailable` until its backend is configured. The marketing site remains available, but order submissions, tracking, and the admin panel are unavailable.
+
+1. In Netlify, import this repository and set the build command to `npm run build` and the publish directory to `dist` (also defined in `netlify.toml`).
+2. No environment variables are required for the static website build.
+
+## Enable the order API (optional)
+
+To enable order submissions, tracking, and admin features, connect a Supabase project. Supabase Free quotas and pausing policies apply; no Netlify paid database or blob service is used.
 
 1. Create a Supabase project on its free plan. In the Supabase SQL Editor, run [`supabase/schema.sql`](./supabase/schema.sql) to create the tables, protected RPCs, and private photo bucket.
-2. In Netlify, import this repository and set the build command to `npm run build` and the publish directory to `dist` (also defined in `netlify.toml`).
-3. Add these environment variables in Netlify. Set `MEGABYTE_ADMIN_PASSWORD` to a unique password of at least 12 characters and `MEGABYTE_SESSION_SECRET` to a random secret of at least 32 characters. Keep the Supabase service role key secret.
+2. Add these environment variables in Netlify. Set `MEGABYTE_ADMIN_PASSWORD` to a unique password of at least 12 characters and `MEGABYTE_SESSION_SECRET` to a random secret of at least 32 characters. Keep the Supabase service role key secret.
    - `SUPABASE_URL`
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `MEGABYTE_ADMIN_PASSWORD`

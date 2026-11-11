@@ -110,6 +110,21 @@ function getSettings() {
   }
 }
 
+function hasApiSettings() {
+  const {
+    SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY,
+    MEGABYTE_ADMIN_PASSWORD,
+    MEGABYTE_SESSION_SECRET,
+  } = process.env
+  return Boolean(
+    SUPABASE_URL &&
+    SUPABASE_SERVICE_ROLE_KEY &&
+    MEGABYTE_ADMIN_PASSWORD?.length >= 12 &&
+    MEGABYTE_SESSION_SECRET?.length >= 32,
+  )
+}
+
 function validateOrder(body) {
   const serviceId = body.serviceId
   const customerName = typeof body.name === 'string' ? body.name.trim() : ''
@@ -488,6 +503,17 @@ async function route(request, context, settings) {
 }
 
 export default async function handler(request, context) {
+  const { pathname } = new URL(request.url)
+  if (pathname === '/api/health' && request.method === 'GET') {
+    return json({ status: 'ok' }, 200, { 'Cache-Control': 'no-store' })
+  }
+  if (!hasApiSettings()) {
+    return json(
+      { error: 'Order service is not configured. Orders, tracking, and admin features are unavailable.' },
+      503,
+      { 'Cache-Control': 'no-store' },
+    )
+  }
   try {
     return await route(request, context, getSettings())
   } catch (error) {
