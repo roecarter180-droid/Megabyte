@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import logo from './assets/logo.jpg'
 import { Icon } from './icons.jsx'
 import { CONTACT, SOCIALS, T } from './content.js'
@@ -184,6 +184,56 @@ function SocialItem({ s, t }) {
     >
       {inner}
     </button>
+  )
+}
+
+function ServiceDemoVideo({ video, label }) {
+  const videoRef = useRef(null)
+  const [isNearViewport, setIsNearViewport] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const element = videoRef.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setIsNearViewport(true)
+      setIsVisible(entry.isIntersecting)
+    }, { rootMargin: '100px' })
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const element = videoRef.current
+    if (!element || !isVisible || !isNearViewport) return
+
+    element.play().catch((error) => {
+      if (!['NotAllowedError', 'AbortError'].includes(error.name)) {
+        console.error('Could not start service demo video:', error)
+      }
+    })
+  }, [isNearViewport, isVisible])
+
+  useEffect(() => {
+    if (!isVisible) videoRef.current?.pause()
+  }, [isVisible])
+
+  return (
+    <video
+      ref={videoRef}
+      className="service-demo-video"
+      {...(isNearViewport ? { src: `/videos/${video}.mp4` } : {})}
+      poster={`/videos/${video}.jpg`}
+      autoPlay={isNearViewport}
+      controls
+      loop
+      muted
+      playsInline
+      preload="none"
+      aria-label={label}
+    />
   )
 }
 
@@ -389,17 +439,7 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
                   <div className="service-demo-video-group">
                     {SERVICE_VIDEOS.map((video, i) => (
                       <figure className="service-demo-video-card" key={video}>
-                        <video
-                          className="service-demo-video"
-                          src={`/videos/${video}.mp4`}
-                          autoPlay
-                          controls
-                          loop
-                          muted
-                          playsInline
-                          preload="metadata"
-                          aria-label={t.servicesDemoVideos[i]}
-                        />
+                        <ServiceDemoVideo video={video} label={t.servicesDemoVideos[i]} />
                         <figcaption>{t.servicesDemoVideos[i]}</figcaption>
                       </figure>
                     ))}

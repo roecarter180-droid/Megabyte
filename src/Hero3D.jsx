@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import logo from './assets/logo.jpg'
 
 /* "MB" drawn on a 5×7 pixel grid — the logo's pixel idea, built from 3D cubes */
 const LETTERS = [
@@ -39,15 +40,17 @@ export default function Hero3D() {
     let cleanup = () => {}
 
     ;(async () => {
-      const THREE = await import('three')
-      const { RoundedBoxGeometry } = await import('three/examples/jsm/geometries/RoundedBoxGeometry.js')
+      const [THREE, { RoundedBoxGeometry }] = await Promise.all([
+        import('three'),
+        import('three/examples/jsm/geometries/RoundedBoxGeometry.js'),
+      ])
       if (cancelled) return
 
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
       /* ---------- renderer / scene / camera ---------- */
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
       renderer.shadowMap.enabled = true
       renderer.shadowMap.type = THREE.PCFSoftShadowMap
       mount.appendChild(renderer.domElement)
@@ -59,7 +62,7 @@ export default function Hero3D() {
       const sun = new THREE.DirectionalLight(0xffffff, 2.1)
       sun.position.set(5, 11, 9)
       sun.castShadow = true
-      sun.shadow.mapSize.set(1024, 1024)
+      sun.shadow.mapSize.set(512, 512)
       Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10, near: 1, far: 40 })
       sun.shadow.radius = 6
       scene.add(sun)
@@ -208,9 +211,9 @@ export default function Hero3D() {
       io.observe(mount)
 
       resize()
-      if (reduce) render(99)
-      else loop()
+      render(reduce ? 99 : clock.getElapsedTime())
       mount.classList.add('is-ready')
+      if (!reduce) loop()
 
       cleanup = () => {
         cancelAnimationFrame(raf)
@@ -233,5 +236,9 @@ export default function Hero3D() {
     }
   }, [])
 
-  return <div className="hero-3d" ref={mountRef} aria-hidden="true"></div>
+  return (
+    <div className="hero-3d" ref={mountRef} aria-hidden="true">
+      <img className="hero-3d-poster" src={logo} alt="" />
+    </div>
+  )
 }
