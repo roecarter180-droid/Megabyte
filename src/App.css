@@ -268,8 +268,11 @@
   margin-top: clamp(28px, 4vw, 44px);
 }
 .hero-work-title {
+  max-width: 100%;
   margin-bottom: 16px;
   font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 .hero-work-title::after {
   content: '';
@@ -1172,6 +1175,18 @@
   .hero-inner { grid-template-columns: 1fr; gap: 0; }
   .hero-visual { margin: 0 -24px; order: -1; }
   .hero-3d { aspect-ratio: 1.3; }
+  .process-steps {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .process-steps li { align-items: flex-start; }
+  .process-step-label {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .process-arrow { align-self: center; margin-left: auto; }
   .desktop-only { display: none; }
   .mobile-only { display: inline-flex; }
   .burger { display: flex; }
@@ -1234,9 +1249,9 @@
   .brand { gap: 7px; }
   .brand-text strong { font-size: 1rem; }
   .brand-text small { font-size: 0.65rem; }
-  .hero-strip { grid-template-columns: 1fr; }
+  .hero-strip { grid-template-columns: minmax(0, 1fr); }
   .hero-strip li { padding: 18px; }
-  .hero-strip > li:last-child { grid-column: auto; width: auto; }
+  .hero-strip > li:last-child { grid-column: auto; width: auto; justify-self: stretch; }
   .stairs-scene { height: 240px; overflow: hidden; margin: 0 -24px 16px; }
   .stairs { scale: 0.68; }
   .services { grid-template-columns: 1fr; }
