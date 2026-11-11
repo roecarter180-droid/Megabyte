@@ -622,15 +622,22 @@ function App() {
     const saved = localStorage.getItem('megabyte-language')
     return ['tk', 'ru', 'en'].includes(saved) ? saved : 'tk'
   })
-  const [theme, setTheme] = useState(() => localStorage.getItem('megabyte-theme') === 'dark' ? 'dark' : 'light')
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('megabyte-theme-v2')
+    return saved === 'light' ? 'light' : 'dark'
+  })
   const t = T[lang]
   const path = window.location.pathname
 
   useEffect(() => {
     document.documentElement.lang = lang
     document.documentElement.dataset.theme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute(
+      'content',
+      theme === 'dark' ? '#0b1115' : '#edf2ef',
+    )
     localStorage.setItem('megabyte-language', lang)
-    localStorage.setItem('megabyte-theme', theme)
+    localStorage.setItem('megabyte-theme-v2', theme)
   }, [lang, theme])
 
   const onThemeToggle = () => setTheme((current) => current === 'dark' ? 'light' : 'dark')

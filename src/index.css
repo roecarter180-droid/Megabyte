@@ -1,5 +1,44 @@
 :root {
-  /* Soft sage backgrounds keep the site calm while retaining clear card contrast. */
+  --bg: #0b1115;
+  --surface: #121b20;
+  --tint: #0f1a1f;
+  --ink: #edf5f4;
+  --ink-2: #bfcecf;
+  --ink-3: #91a4a8;
+  --line: #26363b;
+  --line-2: #385057;
+  --navy: #e4eeee;
+  --navy-2: #071317;
+  --blue: #36c9bf;
+  --green: #16c7b7;
+  --green-ink: #63ddd3;
+  --green-soft: #15383a;
+  --blue-soft: #172f36;
+  --info-soft: #14262d;
+  --success-soft: #15332f;
+  --success-line: #28564e;
+  --success-ink: #80e0c3;
+  --danger-soft: #382326;
+  --danger-line: #684047;
+  --danger-ink: #ffaaa3;
+  --card-subtle: #162126;
+  --header-bg: rgba(11, 17, 21, 0.96);
+  --dark-section: #0e191e;
+  --dark-section-ink: var(--ink);
+
+  --maxw: 1160px;
+  --radius: 10px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: dark;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
   --bg: #edf2ef;
   --surface: #ffffff;
   --tint: #e4ece7;
@@ -24,44 +63,8 @@
   --danger-ink: #a42e27;
   --card-subtle: #fcfdfb;
   --header-bg: rgba(237, 242, 239, 0.96);
-
-  --maxw: 1160px;
-  --radius: 10px;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-  color-scheme: light;
-  font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
-  color: var(--ink);
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --bg: #111a17;
-  --surface: #1a2521;
-  --tint: #202d27;
-  --ink: #edf3ee;
-  --ink-2: #c0ccc4;
-  --ink-3: #98a79e;
-  --line: #33423a;
-  --line-2: #48594f;
-  --navy: #b6d2c0;
-  --navy-2: #0c1411;
-  --blue: #83b9ee;
-  --green: #64c879;
-  --green-ink: #8bd69d;
-  --green-soft: #24382b;
-  --blue-soft: #243444;
-  --info-soft: #27333f;
-  --success-soft: #21372a;
-  --success-line: #3b6047;
-  --success-ink: #a1e2ae;
-  --danger-soft: #402726;
-  --danger-line: #6b3f3c;
-  --danger-ink: #ffaaa3;
-  --card-subtle: #1d2923;
-  --header-bg: rgba(17, 26, 23, 0.96);
+  --dark-section: #10304f;
+  --dark-section-ink: #ffffff;
 }
 
 * {
