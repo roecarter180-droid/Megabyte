@@ -568,7 +568,6 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
                   </span>
                   <div>
                     <a href={CONTACT.web} target="_blank" rel="noreferrer">mega-byte.tilda.ws</a>
-                    <a href={CONTACT.webPro} target="_blank" rel="noreferrer">mega-byte-pro.base44.app</a>
                   </div>
                 </div>
               </div>

@@ -7,7 +7,6 @@ export const CONTACT = {
   phoneRaw: ['+99371547966', '+99360120071'],
   email: 'megabyteitservice@gmail.com',
   web: 'https://mega-byte.tilda.ws',
-  webPro: 'https://mega-byte-pro.base44.app/',
 }
 
 /* Social accounts — edit handles/links here. `url: null` = no public link (handle is copyable instead) */
