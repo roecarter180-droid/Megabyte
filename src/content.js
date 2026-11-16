@@ -14,7 +14,7 @@ export const SOCIALS = [
   { id: 'instagram', name: 'Instagram', handle: '@megabyte_inc', url: 'https://www.instagram.com/megabyte_inc/' },
   { id: 'tiktok', name: 'TikTok', handle: '@megabyte_itacademi', url: 'https://www.tiktok.com/@megabyte_itacademi' },
   { id: 'telegram', name: 'Telegram', handle: '@megabytecomputers7', url: 'https://t.me/megabytecomputers7' },
-  { id: 'youtube', name: 'YouTube', handle: 'Megabyte IT-service', url: 'https://www.youtube.com/results?search_query=Megabyte+IT-service' },
+  { id: 'youtube', name: 'YouTube', handle: '@megabyteitservice', url: 'https://www.youtube.com/@megabyteitservice' },
   { id: 'whatsapp', name: 'WhatsApp', handle: 'Megabyte IT-service', url: `https://wa.me/${CONTACT.phoneRaw[0].slice(1)}` },
   { id: 'facebook', name: 'Facebook', handle: 'megabyte_inc', url: 'https://www.facebook.com/search/top?q=megabyte_inc' },
   { id: 'imo', name: 'imo', handle: 'megainfo', url: null },
