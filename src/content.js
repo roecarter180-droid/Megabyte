@@ -13,7 +13,7 @@ export const CONTACT = {
 /* Social accounts — edit handles/links here. `url: null` = no public link (handle is copyable instead) */
 export const SOCIALS = [
   { id: 'instagram', name: 'Instagram', handle: '@megabyte_inc', url: 'https://www.instagram.com/megabyte_inc/' },
-  { id: 'tiktok', name: 'TikTok', handle: '@kompyuterhyzmat7', url: 'https://www.tiktok.com/@kompyuterhyzmat7' },
+  { id: 'tiktok', name: 'TikTok', handle: '@megabyte_itacademi', url: 'https://www.tiktok.com/@megabyte_itacademi' },
   { id: 'telegram', name: 'Telegram', handle: '@megabytecomputers7', url: 'https://t.me/megabytecomputers7' },
   { id: 'youtube', name: 'YouTube', handle: 'Megabyte IT-service', url: 'https://www.youtube.com/results?search_query=Megabyte+IT-service' },
   { id: 'whatsapp', name: 'WhatsApp', handle: 'Megabyte IT-service', url: `https://wa.me/${CONTACT.phoneRaw[0].slice(1)}` },
