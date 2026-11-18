@@ -43,7 +43,6 @@ export const T = {
       ['cart', 'Satuwa', 'Kompýuterler we enjamlar', ['Saýlamak', 'Barlamak', 'Taýýarlamak']],
       ['wrench', 'Abatlaýyş', 'Kompýuter we noutbuk', ['Anyklamak', 'Abatlamak', 'Synag etmek']],
       ['monitor', 'Gurmak', 'Windows, programmalar, tor', ['Gurnamak', 'Sazlamak', 'Barlamak']],
-      ['printer', 'Kserekopiýa', 'Çap etmek, skaner', ['Faýl saýlamak', 'Çap / skan', 'Taýýar almak']],
       ['camera', 'Wideo gözegçilik', 'CCTV gurnamak', ['Ýer saýlamak', 'Kamera gurnamak', 'Biriktirmek']],
     ],
 
@@ -333,7 +332,6 @@ export const T = {
       ['cart', 'Sales', 'Computers and equipment', ['Choose', 'Check', 'Prepare']],
       ['wrench', 'Repair', 'Computers and laptops', ['Diagnose', 'Repair', 'Test']],
       ['monitor', 'Setup', 'Windows, software, networks', ['Install', 'Configure', 'Check']],
-      ['printer', 'Printing & scanning', 'Printing, scanning, copying', ['Send file', 'Print / scan', 'Collect']],
       ['camera', 'Video surveillance', 'CCTV installation', ['Plan positions', 'Install cameras', 'Connect']],
     ],
 
@@ -624,7 +622,6 @@ T.ru = {
     ['cart', 'Продажа', 'Компьютеры и техника', ['Подобрать', 'Проверить', 'Подготовить']],
     ['wrench', 'Ремонт', 'Компьютеры и ноутбуки', ['Диагностика', 'Ремонт', 'Тестирование']],
     ['monitor', 'Настройка', 'Windows, программы, сети', ['Установить', 'Настроить', 'Проверить']],
-    ['printer', 'Печать и сканирование', 'Печать, сканирование, копирование', ['Выбрать файл', 'Печать / скан', 'Получить']],
     ['camera', 'Видеонаблюдение', 'Установка камер', ['Выбрать место', 'Установить камеры', 'Подключить']],
   ],
   servicesTitle: 'Услуги',
