@@ -516,7 +516,9 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
             <div className="why">
               {t.why.map(([icon, title, desc], i) => (
                 <div className="why-item reveal" key={icon} style={{ '--d': `${(i % 3) * 80}ms` }}>
-                  <Icon name={icon} size={22} />
+                  <span className="why-icon-wrap" aria-hidden="true">
+                    <Icon name={icon} size={22} />
+                  </span>
                   <div>
                     <h3>{title}</h3>
                     <p>{desc}</p>

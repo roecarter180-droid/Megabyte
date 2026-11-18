@@ -971,6 +971,11 @@
 .section-dark .section-head h2 {
   color: var(--dark-section-ink);
 }
+.section-dark .section-head h2,
+.why-item h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+}
 .why {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -978,19 +983,34 @@
 }
 .why-item {
   display: flex;
-  gap: 14px;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
 }
-.why-item .icon {
-  color: var(--green-ink);
-  margin-top: 2px;
+.why-icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.15);
+  border-radius: 12px;
 }
 .why-item h3 {
   font-size: 1.02rem;
   margin-bottom: 4px;
 }
 .why-item p {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
   font-size: 0.93rem;
-  color: var(--ink-2);
+  color: #CBD5E1;
 }
 
 /* ---------------- Contact ---------------- */
