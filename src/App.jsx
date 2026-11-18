@@ -191,7 +191,7 @@ function SocialItem({ s, t }) {
   )
 }
 
-function ServiceDemoVideo({ video, label }) {
+function ServiceDemoVideo({ video, label, isDuplicate = false }) {
   const videoRef = useRef(null)
   const [isNearViewport, setIsNearViewport] = useState(false)
 
@@ -199,8 +199,8 @@ function ServiceDemoVideo({ video, label }) {
     const element = videoRef.current
     if (!element) return
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setIsNearViewport(true)
+    const observer = new IntersectionObserver(([observerEntry]) => {
+      if (observerEntry.isIntersecting) setIsNearViewport(true)
     }, { rootMargin: '100px' })
 
     observer.observe(element)
@@ -211,24 +211,39 @@ function ServiceDemoVideo({ video, label }) {
     const element = videoRef.current
     if (!element || !isNearViewport) return
 
-    element.play().catch((error) => {
-      if (!['NotAllowedError', 'AbortError'].includes(error.name)) {
-        console.error('Could not start service demo video:', error)
+    const startPlayback = () => {
+      const sourceGroup = isDuplicate ? element.closest('.service-demo-video-group')?.previousElementSibling : null
+      const source = sourceGroup?.querySelector(`[data-service-video="${video}"]`)
+      if (source && source.readyState >= 1 && element.duration > 0) {
+        element.currentTime = source.currentTime % element.duration
       }
-    })
-  }, [isNearViewport])
+
+      element.play().catch((error) => {
+        if (!['NotAllowedError', 'AbortError'].includes(error.name)) {
+          console.error('Could not start service demo video:', error)
+        }
+      })
+    }
+
+    if (isDuplicate && element.readyState < 1) {
+      element.addEventListener('loadedmetadata', startPlayback, { once: true })
+      return () => element.removeEventListener('loadedmetadata', startPlayback)
+    }
+
+    startPlayback()
+  }, [isNearViewport, video, isDuplicate])
 
   return (
     <video
       ref={videoRef}
       className="service-demo-video"
+      data-service-video={video}
       {...(isNearViewport ? { src: `/videos/${video}.mp4` } : {})}
       poster={`/videos/${video}.jpg`}
-      autoPlay={isNearViewport}
       loop
       muted
       playsInline
-      preload="none"
+      preload={isDuplicate ? 'metadata' : 'none'}
       aria-label={label}
     />
   )
@@ -276,6 +291,18 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
   }, [open])
 
   const close = () => setOpen(false)
+  const synchronizeServiceDemoVideos = ({ currentTarget }) => {
+    const groups = currentTarget.querySelectorAll('.service-demo-video-group')
+    const originals = groups[0]?.querySelectorAll('video') ?? []
+    const duplicates = groups[1]?.querySelectorAll('video') ?? []
+
+    for (let i = 0; i < originals.length; i += 1) {
+      const source = duplicates[i]
+      const target = originals[i]
+      if (!source || source.readyState < 1 || target.readyState < 1 || source.duration <= 0 || target.duration <= 0) continue
+      target.currentTime = source.currentTime % target.duration
+    }
+  }
 
   return (
     <div className="app">
@@ -424,11 +451,14 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
                 <p>{t.servicesDemoText}</p>
               </div>
               <div className="service-demo-marquee">
-                <div className="service-demo-track">
+                <div className="service-demo-track" onAnimationIteration={synchronizeServiceDemoVideos}>
                   <div className="service-demo-video-group">
                     {SERVICE_VIDEOS.map((video, i) => (
                       <figure className="service-demo-video-card" key={video}>
-                        <ServiceDemoVideo video={video} label={t.servicesDemoVideos[i]} />
+                        <ServiceDemoVideo
+                          video={video}
+                          label={t.servicesDemoVideos[i]}
+                        />
                         <figcaption>{t.servicesDemoVideos[i]}</figcaption>
                       </figure>
                     ))}
@@ -436,7 +466,11 @@ function MainSite({ lang, setLang, theme, onThemeToggle }) {
                   <div className="service-demo-video-group" aria-hidden="true">
                     {SERVICE_VIDEOS.map((video, i) => (
                       <figure className="service-demo-video-card" key={video}>
-                        <ServiceDemoVideo video={video} label={t.servicesDemoVideos[i]} />
+                        <ServiceDemoVideo
+                          video={video}
+                          label={t.servicesDemoVideos[i]}
+                          isDuplicate
+                        />
                         <figcaption>{t.servicesDemoVideos[i]}</figcaption>
                       </figure>
                     ))}
