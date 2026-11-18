@@ -293,9 +293,13 @@
 .hero-strip {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: 24px;
 }
-.hero-strip li {
+.hero-strip > li {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   padding: 20px;
   background: var(--surface);
@@ -304,15 +308,10 @@
   box-shadow: 0 10px 30px -22px rgba(16, 48, 79, 0.4);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, translate 0.2s ease;
 }
-.hero-strip li:hover {
+.hero-strip > li:hover {
   translate: 0 -3px;
   border-color: var(--line-2);
   box-shadow: 0 18px 32px -24px rgba(16, 48, 79, 0.5);
-}
-.hero-strip > li:last-child {
-  grid-column: 1 / -1;
-  width: calc(50% - 7px);
-  justify-self: center;
 }
 .process-card-head {
   display: flex;
@@ -350,7 +349,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 6px;
-  margin-top: 20px;
+  margin-top: auto;
   padding-top: 16px;
   border-top: 1px solid var(--line);
 }
@@ -1259,7 +1258,6 @@
   .brand-text small { font-size: 0.65rem; }
   .hero-strip { grid-template-columns: minmax(0, 1fr); }
   .hero-strip li { padding: 18px; }
-  .hero-strip > li:last-child { grid-column: auto; width: auto; justify-self: stretch; }
   .stairs-scene { height: 240px; overflow: hidden; margin: 0 -24px 16px; }
   .stairs { scale: 0.68; }
   .services { grid-template-columns: 1fr; }
